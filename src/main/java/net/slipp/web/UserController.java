@@ -16,7 +16,7 @@ import net.slipp.domain.User;
 import net.slipp.domain.UserRepository;
 
 @Controller
-@RequestMapping("/user/*")
+@RequestMapping("/users")
 public class UserController {
 	
 	private static final Logger log = LoggerFactory.getLogger(UserController.class);
@@ -26,19 +26,19 @@ public class UserController {
 	@Autowired
 	private UserRepository userRepository;
 	
-	@PostMapping("create")
+	@PostMapping("")
 	public String create(User user){
 		log.info("create   : {}", user.toString()); 
 		// jpa h2 로 자동으로 인클로드 된다.
 		userRepository.save(user);
-		return "redirect:list";
+		return "redirect:/users";
 	}
 	
-	@GetMapping("list")
+	@GetMapping("")
 	public String list(Model model){
 		// userRepository.findAll() 목록 가져오기
 		model.addAttribute("users", userRepository.findAll());
-		return "list";
+		return "/user/list";
 	}
 	
 }

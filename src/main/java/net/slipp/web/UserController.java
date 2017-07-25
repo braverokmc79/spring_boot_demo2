@@ -8,6 +8,7 @@ import javax.servlet.http.HttpSession;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.aop.ThrowsAdvice;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -47,13 +48,13 @@ public class UserController {
 		}
 		
 		log.info("login -  success");
-		session.setAttribute("user", user);
+		session.setAttribute("sessiondUser", user);
 		return "redirect:/";
 	}
 	
 	@GetMapping("/logout")
 	public String logout(HttpSession session){
-		session.removeAttribute("user");
+		session.removeAttribute("sessiondUser");
 		return "redirect:/";
 	}
 	
@@ -82,7 +83,18 @@ public class UserController {
 	
 	
 	@GetMapping("/{id}/form")
-	public String updateForm(@PathVariable Long id, Model model){
+	public String updateForm(@PathVariable Long id, Model model, HttpSession session){
+
+		User sessiondUser=(User)session.getAttribute("sessiondUser");
+		if(sessiondUser==null){
+			return "redirect:/";
+		}
+		
+		if(!sessiondUser.getId().equals(id)){
+			new IllegalStateException("You can't  update the anther user");
+			return "redirect:/";
+		}
+		
 		log.info("update form {} ", id);
 		User user =userRepository.findOne(id);
 		model.addAttribute("user",user);
@@ -91,7 +103,18 @@ public class UserController {
 	
 	
 	@PutMapping("/update")
-	public String update(User updateUser){
+	public String update(User updateUser, HttpSession session){
+		
+		User sessiondUser=(User)session.getAttribute("sessiondUser");
+		if(sessiondUser==null){
+			return "redirect:/";
+		}
+		
+		if(!sessiondUser.getId().equals(updateUser.getId())){
+			new IllegalStateException("You can't  update the anther user");
+			return "redirect:/";
+		}
+				
 		//save() 는 기존의 아이디값이 있으면 업데이트 없으면 인서트 한다.
 		userRepository.save(updateUser);
 		return "redirect:/users";

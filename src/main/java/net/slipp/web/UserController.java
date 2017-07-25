@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
+import javax.servlet.http.HttpSession;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -25,16 +26,45 @@ public class UserController {
 	
 	private static final Logger log = LoggerFactory.getLogger(UserController.class);
 	
-	
 	@Autowired
 	private UserRepository userRepository;
 	
+	@GetMapping("/loginForm")
+	public String loginForm(){
+		return "/user/login";
+	}
+	
+	@PostMapping("/login")
+	public String login(String userId, String password, HttpSession session){
+		User user =userRepository.findByUserId(userId);
+		if(user==null){
+			log.info("login -  user.null");
+			return "redirect:/users/loginForm";
+		}
+		if(!password.equals(user.getPassword())){
+			log.info("login -  !password");
+			return "redirect:/users/loginForm";
+		}
+		
+		log.info("login -  success");
+		session.setAttribute("user", user);
+		return "redirect:/";
+	}
+	
+	@GetMapping("/logout")
+	public String logout(HttpSession session){
+		session.removeAttribute("user");
+		return "redirect:/";
+	}
+	
+	
 	
 	@GetMapping("/form")
-	public String form(){
+	public String form(){	
 		return "/user/form";
 	}
 		
+	
 	@PostMapping("")
 	public String create(User user){
 		log.info("create   : {}", user.toString()); 
@@ -53,6 +83,7 @@ public class UserController {
 	
 	@GetMapping("/{id}/form")
 	public String updateForm(@PathVariable Long id, Model model){
+		log.info("update form {} ", id);
 		User user =userRepository.findOne(id);
 		model.addAttribute("user",user);
 		return "/user/updateform";

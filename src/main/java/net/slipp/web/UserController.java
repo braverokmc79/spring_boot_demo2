@@ -42,19 +42,19 @@ public class UserController {
 			log.info("login -  user.null");
 			return "redirect:/users/loginForm";
 		}
-		if(!password.equals(user.getPassword())){
+		if(!user.matchPassword(password)){
 			log.info("login -  !password");
 			return "redirect:/users/loginForm";
 		}
 		
 		log.info("login -  success");
-		session.setAttribute("sessiondUser", user);
+		session.setAttribute(HttpSessionUtils.USER_SESSION_KEY, user);
 		return "redirect:/";
 	}
 	
 	@GetMapping("/logout")
 	public String logout(HttpSession session){
-		session.removeAttribute("sessiondUser");
+		session.removeAttribute(HttpSessionUtils.USER_SESSION_KEY);
 		return "redirect:/";
 	}
 	
@@ -85,12 +85,11 @@ public class UserController {
 	@GetMapping("/{id}/form")
 	public String updateForm(@PathVariable Long id, Model model, HttpSession session){
 
-		User sessiondUser=(User)session.getAttribute("sessiondUser");
-		if(sessiondUser==null){
+		if(HttpSessionUtils.isLoginUser(session)){
 			return "redirect:/";
 		}
-		
-		if(!sessiondUser.getId().equals(id)){
+		User sessiondUser=HttpSessionUtils.getUserFromSession(session);
+		if(!sessiondUser.matchId(id)){
 			new IllegalStateException("You can't  update the anther user");
 			return "redirect:/";
 		}
@@ -105,11 +104,10 @@ public class UserController {
 	@PutMapping("/update")
 	public String update(User updateUser, HttpSession session){
 		
-		User sessiondUser=(User)session.getAttribute("sessiondUser");
-		if(sessiondUser==null){
+		if(HttpSessionUtils.isLoginUser(session)){
 			return "redirect:/";
 		}
-		
+		User sessiondUser=HttpSessionUtils.getUserFromSession(session);
 		if(!sessiondUser.getId().equals(updateUser.getId())){
 			new IllegalStateException("You can't  update the anther user");
 			return "redirect:/";

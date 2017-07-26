@@ -71,6 +71,22 @@ public class User {
 		this.password = password;
 	}
 
+	
+	public boolean matchPassword(String newPassword){
+		if(newPassword==null){
+			return false;
+		}
+		return this.password.equals(newPassword);
+	}
+	
+	public boolean matchId(Long newId){
+		if(newId==null){
+			return false;
+		}
+		return this.id.equals(newId);
+	}
+	
+	
 	@Override
 	public String toString() {
 		return "User [id=" + id + ", userId=" + userId + ", name=" + name + ", email=" + email + ", password="

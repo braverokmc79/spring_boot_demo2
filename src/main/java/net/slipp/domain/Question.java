@@ -88,6 +88,11 @@ public class Question {
 				+ ", datetime=" + datetime + "]";
 	}
 
+	public void update(String title2, String contents2) {
+		this.title=title2;
+		this.contents=contents2;
+	}
+
 	
 	
 	

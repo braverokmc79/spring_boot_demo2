@@ -93,6 +93,13 @@ public class Question {
 		this.contents=contents2;
 	}
 
+	public boolean isSameWriter(User sessionedUser) {
+		return this.writer.equals(sessionedUser);
+	}
+	
+	
+	
+	
 	
 	
 	

@@ -22,7 +22,6 @@ import net.slipp.domain.User;
 @RequestMapping("/questions")
 public class QuestionController {
 
-	
 	private static final Logger log = LoggerFactory.getLogger(QuestionController.class);
 
 	@Autowired
@@ -45,8 +44,7 @@ public class QuestionController {
 		User sessionUser =HttpSessionUtils.getUserFromSession(session);
 		Question newQuestion =new Question(sessionUser, title, contents);
 		
-		questionRepository.save(newQuestion);
-		
+		questionRepository.save(newQuestion);	
 		return "redirect:/";
 	}
 	
@@ -57,27 +55,67 @@ public class QuestionController {
 	}
 	
 	@GetMapping("/{id}/form")
-	public String updateForm(@PathVariable Long id, Model model){
+	public String updateForm(@PathVariable Long id, Model model, HttpSession session){
+		if(!HttpSessionUtils.isLoginUser(session)){
+			return "/users/loginForm";
+		}
+		
+		User sessionedUser =HttpSessionUtils.getUserFromSession(session);
+		Question question =questionRepository.findOne(id);
+		if(question.isSameWriter(sessionedUser)){
+			return "/users/loginForm";
+		}
 		model.addAttribute("question", questionRepository.findOne(id));
 		return "/qna/updateForm";
 	}
+		
 	
 	@PutMapping("/{id}")
-	public String update(@PathVariable Long id, String title, String contents){
-		Question question=questionRepository.findOne(id);
+	public String update(@PathVariable Long id, String title, String contents, HttpSession session){
+		if(!HttpSessionUtils.isLoginUser(session)){
+			return "/users/loginForm";
+		}
+		
+		User sessionedUser =HttpSessionUtils.getUserFromSession(session);
+		Question question =questionRepository.findOne(id);
+		if(question.isSameWriter(sessionedUser)){
+			return "/users/loginForm";
+		}
+		
 		question.update(title, contents);
 		questionRepository.save(question);
 		return String.format("redirect:/questions/%d", id);
 	}
 	
 	@DeleteMapping("/{id}")
-	public String delete(@PathVariable Long id){
+	public String delete(@PathVariable Long id, HttpSession session){
+		if(!HttpSessionUtils.isLoginUser(session)){
+			return "/users/loginForm";
+		}
+		
+		User sessionedUser =HttpSessionUtils.getUserFromSession(session);
+		Question question =questionRepository.findOne(id);
+		if(question.isSameWriter(sessionedUser)){
+			return "/users/loginForm";
+		}
 		questionRepository.delete(id);
 		return "redirect:/";
 	}
 	
 	
 }
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

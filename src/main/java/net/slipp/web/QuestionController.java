@@ -5,6 +5,7 @@ import javax.servlet.http.HttpSession;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.repository.query.QueryLookupStrategy;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -50,7 +51,9 @@ public class QuestionController {
 	
 	@GetMapping("/{id}")
 	public String show(@PathVariable Long id, Model model){
-		model.addAttribute("question", questionRepository.findOne(id));
+		Question question=questionRepository.findOne(id);
+		model.addAttribute("question", question);
+		model.addAttribute("answers", question.getAnswers());
 		return "/qna/show";
 	}
 	

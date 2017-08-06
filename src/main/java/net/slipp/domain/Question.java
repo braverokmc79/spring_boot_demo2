@@ -1,13 +1,17 @@
 package net.slipp.domain;
 
 import java.util.Date;
+import java.util.List;
 
 import javax.persistence.Entity;
 import javax.persistence.ForeignKey;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+import javax.persistence.OrderBy;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
@@ -23,12 +27,17 @@ public class Question {
 	private User writer;
 	
 	private String title;
-
+		
+	@Lob
 	private String contents;
-
+	
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date datetime;
 
+	@OneToMany(mappedBy="question")
+	@OrderBy("id ASC")
+	private List<Answer> answers;
+	
 	public Question() {
 
 	}
@@ -82,6 +91,17 @@ public class Question {
 		this.datetime = datetime;
 	}
 
+	
+	
+	
+	public List<Answer> getAnswers() {
+		return answers;
+	}
+
+	public void setAnswers(List<Answer> answers) {
+		this.answers = answers;
+	}
+
 	@Override
 	public String toString() {
 		return "Question [id=" + id + ", writer=" + writer + ", title=" + title + ", contents=" + contents
@@ -96,11 +116,6 @@ public class Question {
 	public boolean isSameWriter(User sessionedUser) {
 		return this.writer.equals(sessionedUser);
 	}
-	
-	
-	
-	
-	
 	
 	
 

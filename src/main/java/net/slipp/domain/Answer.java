@@ -28,6 +28,7 @@ public class Answer {
 	@JoinColumn(foreignKey=@ForeignKey(name="fk_answer_to_question"))
 	private Question question;
 	
+	
 	@Lob
 	private String contents;
 		
@@ -82,13 +83,21 @@ public class Answer {
 		return createDate.format(DateTimeFormatter.ofPattern("yyyy.MM.dd HH:mm:ss"));
 	}
 	
+	
 
 	@Override
 	public String toString() {
-		return "Answer [id=" + id + ", writer=" + writer + ", contents=" + contents + ", createDate=" + createDate
-				+ "]";
+		return "Answer [id=" + id + ", writer=" + writer + ", question=" + question + ", contents=" + contents
+				+ ", createDate=" + createDate + "]";
 	}
 
+		
+	
+	public Long getQuestionId() {
+		return question.getId();
+	}
+	
+	
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -112,6 +121,10 @@ public class Answer {
 		} else if (!id.equals(other.id))
 			return false;
 		return true;
+	}
+
+	public boolean isSameWriter(User loginUser) {
+		return this.writer.equals(loginUser);
 	}
 	
 	

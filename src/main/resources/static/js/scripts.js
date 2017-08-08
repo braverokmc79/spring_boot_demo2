@@ -1,6 +1,9 @@
    
 $(".answer-write input[type=submit]").click(addAnswer);
-   
+
+$(".link-delete-article").click(deleteAnswer);
+
+
 function addAnswer(e){	
     	e.preventDefault();
     	console.log("click!");
@@ -30,7 +33,7 @@ function onError(){
 function onSuccess(data, status){
 	console.log(data);
 	var answerTemplate =$("#answerTemplate").html();
-	var template =answerTemplate.format(data.writer.userId, data.formattedCreateDate, data.contents, data.id, data.id);
+	var template =answerTemplate.format(data.writer.userId, data.formattedCreateDate, data.contents, data.questionId, data.id);
 	$(".qna-comment-slipp-articles").prepend(template);
 	$("textarea[name=contents]").val("");
 }
@@ -46,10 +49,31 @@ String.prototype.format = function() {
 };
 
 
-
-
-
-
+function deleteAnswer(e){
+	
+	e.preventDefault();
+	var url =$(this).attr("href");
+	console.log("답변 삭제"  + url);
+	var thisDelete=$(this);
+	
+	$.ajax({
+		type :'delete',
+		url: url,
+		dataType : 'json',
+		error :function (xhr, status){
+			console.log("error");
+		},
+		success:function(data, status){
+			console.log(data);
+			if(data.valid){
+				thisDelete.closest('article').remove();				
+			}else{
+				alert(data.errorMessage);
+			}
+		}
+	});
+	
+}
 
 
 

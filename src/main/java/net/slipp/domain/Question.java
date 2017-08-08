@@ -41,7 +41,7 @@ public class Question {
 	private Date datetime;
 
 	@OneToMany(mappedBy="question")
-	@OrderBy("id ASC")
+	@OrderBy("id DESC")
 	private List<Answer> answers;
 	
 	public Question() {
@@ -54,9 +54,9 @@ public class Question {
 		this.title = title;
 		this.contents = contents;
 	}
-
-
 	
+	
+
 	public Long getId() {
 		return id;
 	}
@@ -97,21 +97,12 @@ public class Question {
 		this.datetime = datetime;
 	}
 
-	
-	
-	
 	public List<Answer> getAnswers() {
 		return answers;
 	}
 
 	public void setAnswers(List<Answer> answers) {
 		this.answers = answers;
-	}
-
-	@Override
-	public String toString() {
-		return "Question [id=" + id + ", writer=" + writer + ", title=" + title + ", contents=" + contents
-				+ ", datetime=" + datetime + "]";
 	}
 
 	public void update(String title2, String contents2) {

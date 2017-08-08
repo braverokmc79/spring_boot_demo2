@@ -5,18 +5,28 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 @Entity
 public class User {
 
 	@Id
 	@GeneratedValue
+	@JsonProperty
 	private Long id;
-	
+		
 	//널 방지
 	@Column(nullable=false, length=20)
+	@JsonProperty
 	private String userId;
+	
+	@JsonProperty
 	private String name;
+	
+	@JsonProperty
 	private String email;
+	
+	@JsonProperty
 	private String password;
 	
 	public User() {

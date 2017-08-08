@@ -82,14 +82,14 @@
                          {{/answers}}
                          
                          
-                          <form class="submit-write" method="post" action="/questions/{{id}}/answers">
+                          <form class="answer-write" method="post" action="/api/questions/{{id}}/answers">
                               <div class="form-group" style="padding:14px;">
                                   <textarea class="form-control" placeholder="Update your status" name="contents"></textarea>
                               </div>
-                              
-                              <input type="submit" class="btn btn-success pull-right" value="답변하기">
-                              <div class="clearfix" />
+                              <input type="submit" class="btn btn-success pull-right" value="답변하기" >
+                              <div class="clearfix" ></div>
                           </form>
+                          
                       </div>
                   </div>
               </div>
@@ -100,6 +100,9 @@
     
     </div>
 </div>
+
+
+
 
 <script type="text/template" id="answerTemplate">
 	<article class="article">
@@ -121,10 +124,7 @@
 				<a class="link-modify-article" href="/api/qna/updateAnswer/{3}">수정</a>
 			</li>
 			<li>
-				<form class="delete-answer-form" action="/api/questions/{3}/answers/{4}" method="POST">
-					<input type="hidden" name="_method" value="DELETE">
-                     <button type="submit" class="delete-answer-button">삭제</button>
-				</form>
+				<a class="link-delete-article" href="/api/qna/updateAnswer/{3}">삭제</a>
 			</li>
 		</ul>
 		</div>

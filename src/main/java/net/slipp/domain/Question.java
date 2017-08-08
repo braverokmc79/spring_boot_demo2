@@ -15,20 +15,26 @@ import javax.persistence.OrderBy;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 @Entity
 public class Question {
 
 	@Id
 	@GeneratedValue
+	@JsonProperty
 	private Long id;
 
 	@ManyToOne
 	@JoinColumn(foreignKey=@ForeignKey(name="fk_question_writer"))
+	@JsonProperty
 	private User writer;
 	
+	@JsonProperty
 	private String title;
 		
 	@Lob
+	@JsonProperty
 	private String contents;
 	
 	@Temporal(TemporalType.TIMESTAMP)

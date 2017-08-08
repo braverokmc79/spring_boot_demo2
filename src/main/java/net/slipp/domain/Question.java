@@ -40,6 +40,9 @@ public class Question {
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date datetime;
 
+	@JsonProperty
+	private Integer countOfAnswer =0;
+	
 	@OneToMany(mappedBy="question")
 	@OrderBy("id DESC")
 	private List<Answer> answers;
@@ -113,7 +116,31 @@ public class Question {
 	public boolean isSameWriter(User sessionedUser) {
 		return this.writer.equals(sessionedUser);
 	}
-	
-	
 
+	
+	
+	public Integer getCountOfAnswer() {
+		return countOfAnswer;
+	}
+
+	public void setCountOfAnswer(Integer countOfAnswer) {
+		this.countOfAnswer = countOfAnswer;
+	}
+
+	public void addAnswer() {
+		this.countOfAnswer +=1;	
+	}
+	
+	public void deleteAnswer(){
+		this.countOfAnswer  -=1;
+	}
+
+	@Override
+	public String toString() {
+		return "Question [id=" + id + ", writer=" + writer + ", title=" + title + ", contents=" + contents
+				+ ", datetime=" + datetime + ", countOfAnswer=" + countOfAnswer + ", answers=" + answers + "]";
+	}
+
+	
+	
 }

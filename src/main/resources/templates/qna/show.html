@@ -46,10 +46,14 @@
               
 
               <div class="qna-comment">
+             	
                   <div class="qna-comment-slipp">
-                      <p class="qna-comment-count"><strong>2</strong>개의 의견</p>
+                   {{#question}}
+                      <p class="qna-comment-count"><strong>{{countOfAnswer}}</strong>개의 의견</p>
+ 					{{/question}}
                       <div class="qna-comment-slipp-articles">
-						{{#answers}}
+						
+				{{#answers}}
                           <article class="article" id="answer-1405">
                               <div class="article-header">
                                   <div class="article-header-thumb">
@@ -76,9 +80,9 @@
                                   </ul>
                               </div>
                           </article>
-                         {{/answers}}
+                        
                          
-                         
+               {{/answers}}          
                           <form class="answer-write" method="post" action="/api/questions/{{id}}/answers">
                               <div class="form-group" style="padding:14px;">
                                   <textarea class="form-control" placeholder="Update your status" name="contents"></textarea>
@@ -89,10 +93,9 @@
                           
                       </div>
                   </div>
+              	
               </div>
               
-        
-        
         
           </div>
         </div>

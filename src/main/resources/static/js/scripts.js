@@ -36,6 +36,7 @@ function onSuccess(data, status){
 	var template =answerTemplate.format(data.writer.userId, data.formattedCreateDate, data.contents, data.questionId, data.id);
 	$(".qna-comment-slipp-articles").prepend(template);
 	$("textarea[name=contents]").val("");
+	countAnswer(true);
 }
 
 String.prototype.format = function() {
@@ -66,7 +67,8 @@ function deleteAnswer(e){
 		success:function(data, status){
 			console.log(data);
 			if(data.valid){
-				thisDelete.closest('article').remove();				
+				thisDelete.closest('article').remove();	
+				countAnswer(false);
 			}else{
 				alert(data.errorMessage);
 			}
@@ -76,7 +78,12 @@ function deleteAnswer(e){
 }
 
 
-
+function countAnswer(check){
+	var count =$(".qna-comment-count strong");
+	var countNum =count.text();
+	if(check)count.text(parseInt(countNum)+1);
+	else count.text(parseInt(countNum)-1);	
+}
     
 
 

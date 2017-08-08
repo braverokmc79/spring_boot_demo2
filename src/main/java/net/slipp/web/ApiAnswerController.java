@@ -31,10 +31,10 @@ public class ApiAnswerController {
 		if(!HttpSessionUtils.isLoginUser(session)){
 			return null;
 		}
-		
 		User loginUser =HttpSessionUtils.getUserFromSession(session);
 		Question question =questionRepository.findOne(questionId);
 		Answer answer =new Answer(loginUser, question, contents);
+		question.addAnswer();
 		return answerRepository.save(answer);
 	}
 
@@ -49,8 +49,10 @@ public class ApiAnswerController {
 		if(!answer.isSameWriter(loginUser)){
 			return Result.fail("자신의 글만 삭제 할 수 있습니다.");
 		}
-		
 		answerRepository.delete(id);
+		Question question =questionRepository.findOne(questionId);
+		question.deleteAnswer();
+		questionRepository.save(question);
 		return Result.ok();
 		
 	}

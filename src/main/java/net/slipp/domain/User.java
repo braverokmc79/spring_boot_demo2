@@ -10,11 +10,7 @@ import javax.persistence.Id;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 @Entity
-public class User implements Serializable{
-
-	@Id
-	@GeneratedValue
-	private Long id;
+public class User extends AbstractEntity{
 		
 	//널 방지
 	@Column(nullable=false, length=20)
@@ -33,21 +29,12 @@ public class User implements Serializable{
 	public User() {
 		
 	}
-
 	public User(String userId, String name, String email, String password) {
 		super();
 		this.userId = userId;
 		this.name = name;
 		this.email = email;
 		this.password = password;
-	}
-
-	public Long getId() {
-		return id;
-	}
-
-	public void setId(Long id) {
-		this.id = id;
 	}
 
 	public String getUserId() {
@@ -94,45 +81,16 @@ public class User implements Serializable{
 		if(newId==null){
 			return false;
 		}
-		return this.id.equals(newId);
+		return getId().equals(newId);
 	}
 	
 	
 	@Override
 	public String toString() {
-		return "User [id=" + id + ", userId=" + userId + ", name=" + name + ", email=" + email + ", password="
+		return "User [id=" + getId() + ", userId=" + userId + ", name=" + name + ", email=" + email + ", password="
 				+ password + "]";
 	}
 
-	
-	@Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + ((id == null) ? 0 : id.hashCode());
-		return result;
-	}
-
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		User other = (User) obj;
-		if (id == null) {
-			if (other.id != null)
-				return false;
-		} else if (!id.equals(other.id))
-			return false;
-		return true;
-	}
-
-
-	
-	
 	
 	
 }

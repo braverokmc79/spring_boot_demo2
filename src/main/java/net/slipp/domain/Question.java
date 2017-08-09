@@ -18,12 +18,7 @@ import javax.persistence.TemporalType;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 @Entity
-public class Question {
-
-	@Id
-	@GeneratedValue
-	@JsonProperty
-	private Long id;
+public class Question extends AbstractEntity {
 
 	@ManyToOne
 	@JoinColumn(foreignKey=@ForeignKey(name="fk_question_writer"))
@@ -58,15 +53,6 @@ public class Question {
 		this.contents = contents;
 	}
 	
-	
-
-	public Long getId() {
-		return id;
-	}
-
-	public void setId(Long id) {
-		this.id = id;
-	}
 
 	public User getWriter() {
 		return writer;
@@ -137,7 +123,7 @@ public class Question {
 
 	@Override
 	public String toString() {
-		return "Question [id=" + id + ", writer=" + writer + ", title=" + title + ", contents=" + contents
+		return "Question [id=" + getId() + ", writer=" + writer + ", title=" + title + ", contents=" + contents
 				+ ", datetime=" + datetime + ", countOfAnswer=" + countOfAnswer + ", answers=" + answers + "]";
 	}
 
